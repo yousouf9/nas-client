@@ -5,6 +5,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #f1f2f7;
 }
 
 code {
@@ -18,7 +19,7 @@ code {
 }
 .modal {
   background-color: rgba(0,0,0,0.5);
-  position: fixed;
+  position: absolute;
   height: 100%;
   width: 100%;
   top: 0;

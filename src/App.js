@@ -1,25 +1,15 @@
-import logo from './logo.svg';
+import HomeFooter from "./components/footer/Footer"
+import HomeHeader from "./components/headers/Home"
+import HomeIntroduction from "./components/home/Introduction"
 
 
-function App() {
+const App = () =>{
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <>
+        <HomeHeader />
+        <HomeIntroduction />
+        <HomeFooter />
+    </>
+  )
 }
-
-export default App;
+export default App
