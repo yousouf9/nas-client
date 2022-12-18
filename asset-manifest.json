@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/nas-client/static/css/main.8112039f.css",
+    "main.js": "/nas-client/static/js/main.8195c3ed.js",
+    "static/js/787.c4e7f8f9.chunk.js": "/nas-client/static/js/787.c4e7f8f9.chunk.js",
+    "index.html": "/nas-client/index.html",
+    "main.8112039f.css.map": "/nas-client/static/css/main.8112039f.css.map",
+    "main.8195c3ed.js.map": "/nas-client/static/js/main.8195c3ed.js.map",
+    "787.c4e7f8f9.chunk.js.map": "/nas-client/static/js/787.c4e7f8f9.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.8112039f.css",
+    "static/js/main.8195c3ed.js"
+  ]
+}
