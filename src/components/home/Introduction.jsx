@@ -34,12 +34,12 @@ const HomeIntroduction = () =>{
       </Grid>
       <Grid item xs={12} md={6} sx={style.logo}>
             <div style={{
-            backgroundImage:'url(/asset/backgound/shelf.png)',
-            backgroundPosition:'center',
-            backgroundRepeat:'no-repeat',
-            backgroundSize:'contain',
-            minHeight:'300px',
-            width:'100%',
+              backgroundImage:'url(/asset/background/shelf.png)',
+              backgroundPosition:'center',
+              backgroundRepeat:'no-repeat',
+              backgroundSize:'contain',
+              minHeight:'300px',
+              width:'100%',
             }}>
             </div>
       </Grid>

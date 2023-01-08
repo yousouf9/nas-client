@@ -11,12 +11,25 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import AdbIcon from '@mui/icons-material/Adb';
+import { NavLink, useNavigate } from 'react-router-dom';
+import useUser from '../../hooks/useAuth';
+import useNotification from '../../hooks/useNotification';
 
-const pages = ['Home', 'About', 'Catalogue', 'Contact'];
-const settings = ['Profile', 'Account', 'Logout'];
+const pages = [{
+  name:'Home',
+  link:'/home'
+}, {
+  name:'About',
+  link:'/about'
+},{
+  name:"Catalogue",
+  link:'/catalogue'
+},{
+  name:"Contact",
+  link:"/contact"
+}];
 
-const HomeHeader = () => {
+const HomeHeader = ({ name}) => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -35,11 +48,37 @@ const HomeHeader = () => {
     setAnchorElUser(null);
   };
 
+
+
+  const navigate = useNavigate();
+
+  const user = useUser(state => state.user);
+  const logout = useUser(state => state.logout);
+  const [warningNotification, successNotification, info] = useNotification();
+
+  const handlelogout = () =>{
+    logout()
+    if(!user){
+      successNotification("successfully logout")
+    }
+
+  }
+
+  const handleNavigate =(e, name, link) =>{
+
+    e.preventDefault()
+    if(name==="Catalogue" && !user){
+      info("You must be logged in", "Login required")
+    }else{
+      navigate(link)
+    }
+}
+
+
   return (
     <AppBar position="sticky" color="success">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
           <Typography
             variant="h6"
             noWrap
@@ -55,7 +94,11 @@ const HomeHeader = () => {
               textDecoration: 'none',
             }}
           >
-            LOGO
+          <Avatar
+           alt="nasarawa state library" 
+           src='/nlogo.png'
+           sx={{ width: 60, height: 60 }}
+            />
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -88,13 +131,12 @@ const HomeHeader = () => {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
+                <MenuItem key={page.name} onClick={handleCloseNavMenu}>
+                  <Typography textAlign="center">{page.name}</Typography>
                 </MenuItem>
               ))}
             </Menu>
           </Box>
-          <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
           <Typography
             variant="h5"
             noWrap
@@ -111,49 +153,62 @@ const HomeHeader = () => {
               textDecoration: 'none',
             }}
           >
-            LOGO
+          <Avatar alt="nasarawa state library" src='/nlogo.png' />
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
               <Button
-                key={page}
-                onClick={handleCloseNavMenu}
+                key={page.name}
+                onClick={(e)=> handleNavigate(e, page.name, page.link)}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
-                {page}
+                {page.name}
               </Button>
+              
             ))}
           </Box>
-            Login
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Yusuf Ibrahim" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+           {user ? (
+            <Box sx={{ flexGrow: 0 }}>
+              <Tooltip title="Open settings">
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <Avatar alt={name} src={user?.profile} />
+                </IconButton>
+              </Tooltip>
+              <Menu
+                sx={{ mt: '45px' }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+              >
+                <MenuItem  onClick={handleCloseUserMenu}>
+                 <NavLink to={`/dashboard`}> Account </NavLink>
                 </MenuItem>
-              ))}
-            </Menu>
-          </Box>
+                <MenuItem  onClick={handleCloseUserMenu}>
+                  <Typography onClick={handlelogout} textAlign="center">Logout</Typography>                    
+                </MenuItem>
+              </Menu>
+            </Box>
+           ):(
+            <Button 
+              variant="outlined" 
+              color="inherit"
+              href="/login"
+              >
+                Login
+            </Button>
+           )
+           }
+
         </Toolbar>
       </Container>
     </AppBar>

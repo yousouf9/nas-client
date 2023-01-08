@@ -1,0 +1,19 @@
+.content {
+  text-align: center;
+}
+.pdf-container {
+  display: flex;
+  justify-content: center;
+  user-select: none;
+}
+
+.controls {
+  margin: 20px;
+  margin-bottom: 0px;
+}
+
+@media print {
+  .pdf-container {
+    display: none;
+  }
+}
