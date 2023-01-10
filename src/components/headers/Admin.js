@@ -74,7 +74,7 @@ export default function AdminLayout({children}) {
               color="inherit"
               aria-label="open drawer"
               onClick={handleDrawerOpen}
-              edge="start"
+              edge='start'
               sx={{
                 marginRight: 5,
                 ...(open && { display: 'none' }),
@@ -85,13 +85,25 @@ export default function AdminLayout({children}) {
             <Typography variant="h6" noWrap component="div">
               Dashboard
             </Typography>
-            <Button 
-              variant="outlined" 
-              color="inherit"
-              href="/login"
+            <Typography 
+              variant="h6"
+              noWrap component="div"
+              sx={{
+                display: "flex",
+                position: "absolute",
+                right: "5px"
+              }}
               >
-                Login
-            </Button>
+              <Button
+                sx={{display: 'flex', alignSelf:'flex-end'}}
+                variant="outlined" 
+                color="inherit"
+                href="/"
+                >
+                  Go Home
+              </Button>
+            </Typography>
+
           </Toolbar>
         </AppBar>
       </ThemeProvider>
