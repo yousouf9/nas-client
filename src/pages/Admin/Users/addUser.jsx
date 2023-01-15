@@ -158,6 +158,7 @@ export default function AddUser({open, setOpen}) {
             <MenuItem value={Roles.catmod}>{Roles.catmod}</MenuItem>
             <MenuItem value={Roles.bookmod}>{Roles.bookmod}</MenuItem>
             <MenuItem value={Roles.admin}>{Roles.admin}</MenuItem>
+            <MenuItem value={Roles.lecturer}>{Roles.lecturer}</MenuItem>
           </TextField>
         </Grid>
         <Grid item xs={6}>

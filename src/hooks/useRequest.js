@@ -22,7 +22,7 @@ const useRequest = ({url, method, body, onSuccess}) => {
      return response
 
     } catch (error) {
-      console.log( error , "realyy");
+      
       console.log(error.response, error);
       const errors = error.response.data?.errors
     

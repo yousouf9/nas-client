@@ -20,7 +20,7 @@ function Copyright(props) {
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
       <Link color="inherit" href="#">
-        Kaduna State, KDS
+        Nasarawa State E-Library
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}

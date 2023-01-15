@@ -16,7 +16,7 @@ const useBooks = create((set) => ({
         totalPages:res.data.data.totalPages
       }));
     } catch (error) {
-       throw new Error(error.response?.data)
+       throw error
     }  
    },
   addBook: (data) => {

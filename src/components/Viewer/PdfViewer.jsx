@@ -3,9 +3,11 @@ import {useLocation} from 'react-router-dom';
 import { Document, Page, pdfjs } from "react-pdf";
 import { useCookies } from 'react-cookie';
 import "./pdfviewer.css";
-import { Box, Button, Divider, TextField, Typography } from "@mui/material";
+import { Box, Button, Divider, TextField, Typography, useMediaQuery, useTheme } from "@mui/material";
 import useNotification from "../../hooks/useNotification";
 import useUser from "../../hooks/useAuth";
+import {useNavigate} from 'react-router-dom';
+
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
 
@@ -24,6 +26,9 @@ console.log( "form views", user);
   const [pageNumber, setPageNumber] = useState(parseInt(cookies[`${title}`]) || 1);
   const [currPage, setCurrPage] = useState(0);
   const [warningNotification, successNotification, infoNotification] = useNotification()
+  const navigate = useNavigate();
+  const theme = useTheme();
+  const isMatch = useMediaQuery(theme.breakpoints.up("md"))
 
   const onDocumentLoadSuccess = ({ numPages }) => {
     setNumPages(numPages);
@@ -70,7 +75,9 @@ const handSavePage = (e)=>{
   }
   return (
     <>
-      <Box sx={{ display: 'flex',justifyContent: 'flex-end', margin:"15px"}} >
+      
+      <Box sx={{ display: 'flex',justifyContent:'space-between', margin:"15px"}} >
+        <Button size='small' variant='contained' color='primary' onClick={() => navigate(-1)}>Go back</Button>
         <Box>
             <TextField
               sx={{marginBottom:"5px", marginRight:"5px"}}
@@ -116,10 +123,15 @@ const handSavePage = (e)=>{
           file={content}
           onLoadSuccess={onDocumentLoadSuccess}
           onContextMenu={(e) => e.preventDefault()}
+          scale={1}
+          renderMode='canvas'
           className="pdf-container"
           
         >
-          <Page pageNumber={pageNumber} scale={'1.5'} />
+          <Page 
+            scale={isMatch ? 1.7 : 1}
+            pageNumber={pageNumber}
+          />
         </Document>
         <Box className="content">
           <Box className="controls">
