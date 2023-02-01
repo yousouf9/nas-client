@@ -1,11 +1,7 @@
 import  React, {useState} from 'react';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -15,7 +11,6 @@ import useUser from '../../hooks/useAuth';
 import useLoader from '../../hooks/useLoader';
 import useNotification from '../../hooks/useNotification';
 import { useNavigate } from 'react-router-dom';
-import AlertDialogSlide from '../../components/Dialog/dialog';
 import useRequest from '../../hooks/useRequest';
 import request from '../../api/build-request';
 import HomeHeader from '../../components/headers/Home';
@@ -30,31 +25,16 @@ const  HomeContact =() =>{
 
   const setUserData = useUser(state => state.setUserData);
 
-  //dialog control
-  const [open, setOpen] = React.useState(false);
-
   const [Loader, showLoader, HideLoader]  = useLoader()
   const [warningNotification, successNotification] = useNotification();
-  const navigate = useNavigate()
-  const [email, setEmail] = useState('')
+
 
   const [doRequest] = useRequest({
-    url:'/users/signin',
+    url:'/contacts',
     method: 'post',
     onSuccess: (data) => {
-
-      successNotification("Logged in successfully", "Logged In")
+      successNotification("message sent!", "Sent")
       setUserData(data)
-
-      if(!data.isVerified){
-        navigate('/verify')
-        return
-      }
-      if(data.userType === "user") {
-        navigate('/')  
-        }else{
-        navigate('/dashboard')
-      }
     }
   })
   const handleSubmit = async (event) => {
@@ -62,56 +42,28 @@ const  HomeContact =() =>{
     showLoader()
     const data = new FormData(event.currentTarget);
     console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-      remember: data.get('remember'),
+      sender:data.get('email'),
+      title:data.get('title'),
+      description:data.get('description'),
+      name:data.get('name'),
+      phone:data.get('phone'),
     });
 
+    const newdata = {
+      sender:data.get('email'),
+      title:data.get('title'),
+      description:data.get('description'),
+      name:data.get('name'),
+      phone:data.get('phone'),
+    }
     
-    await doRequest({ email:data.get('email'), password:data.get('password')})
+    await doRequest(newdata)
   
     HideLoader()
 
   };
 
   
-  const handleClickOpen = (e) => {
-    e.preventDefault();
-    setOpen(true);
-  };
-
-  const handleClose = async (e) => {
-    
-    if(e.target.type === 'button') {
-     try {
-       const response = await request().post('/users/reset_password', {
-           email
-       })
-       setUserData(response.data?.data)
-       successNotification(response.data?.data?.message, "Email Sent")
-       navigate('/verify_token')
-       return;
-
-     } catch (error) {
-
-      console.log(error);
-        const errors = error.response.data?.errors
-    
-      for(const err of errors){
-        warningNotification(err.message)
-     }
-    }
-    }
-    setOpen(false);
-  };
-
-
-  const handleEmailChange = (e) => {
-    e.preventDefault()
-    const value = e.target.value;
-    setEmail(value)
-  }
-
 
 
   return (
@@ -250,7 +202,6 @@ const  HomeContact =() =>{
               />
             </Grid>
           </Grid>
-
             <Button
               type="submit"
               fullWidth
