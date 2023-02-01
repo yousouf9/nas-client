@@ -19,7 +19,6 @@ export default function BookCard({image, free, author, type, title, category, de
   const handleClick = (data, e)=>{
     e.preventDefault();
 
-
     if(user?.userType === 'admin'){
 
       if(data.type === "video"){

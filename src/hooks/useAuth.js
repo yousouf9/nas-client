@@ -18,9 +18,6 @@ const useUser = create(
 
     set({ user: {...get().user, ...data} });
   },
-  signup: async (data) => {
-    set({ user: {...get().user, ...data} });
-  },
 
   logout: async () => {
     set({ error: undefined });
