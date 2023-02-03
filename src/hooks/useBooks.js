@@ -9,7 +9,7 @@ const useBooks = create((set) => ({
     try {
 
     const res = await request().get(`/books?limit=${limit}&page=${page}&search=${search}&category=${category}&free=${free}&${ myown ? 'myown='+myown : undefined}`);
-    console.log(res, "res", free);
+    
       set(state=>({
         books:[...res.data.data.docs],
         total:res.data.data.totalDocs,

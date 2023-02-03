@@ -32,6 +32,9 @@ import Plans from './pages/Transactions';
 import Subscription from './pages/Admin/Users/transactions';
 import EditBook from './pages/Admin/Books/editBook';
 import Statistic from './pages/Admin/statistics';
+import Page from './pages/Admin/Pages/Page';
+import AddPage from './pages/Admin/Pages/addPage';
+import ListPageSection from './pages/Admin/Pages/listSection';
 
 const App = () =>{
   return (
@@ -70,7 +73,14 @@ const App = () =>{
               <Route path="books" element={<BookAdmin />} /> 
               <Route path="books/edit" element={<EditBook />} /> 
               <Route path="books/add" element={<AddBook />} />
-              <Route path="books/category" element={<BookCategory />} />          
+              
+              <Route path="books/category" element={<BookCategory />} />  
+              
+              <Route path="pages" element={<Page />} /> 
+              <Route path="pages/add" element={<AddPage />} />
+              <Route path="pages/section/list" element={<ListPageSection />} />
+                     
+              
             </Route>
             <Route path="/book/pdf" element={<PdfViewer />} />
             <Route path="/book/video" element={<Player />} />

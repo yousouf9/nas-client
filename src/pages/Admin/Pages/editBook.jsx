@@ -1,49 +1,87 @@
-import  React, {useState,useEffect} from 'react';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
+import React, {useState,useEffect} from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-
-import { useNavigate } from 'react-router-dom';
-import useUser from '../../../hooks/useAuth';
+import { Box, Button, Container, CssBaseline, Grid, MenuItem, TextField } from '@mui/material';
 import useLoader from '../../../hooks/useLoader';
 import useNotification from '../../../hooks/useNotification';
-import { Grid, MenuItem } from '@mui/material';
-import FieldInput from '../../../components/Input/fileupload';
-import userCategory from '../../../hooks/useCategory';
+import { useLocation, useNavigate } from 'react-router-dom';
 import useRequest from '../../../hooks/useRequest';
+import userCategory from '../../../hooks/useCategory';
+import useBooks from '../../../hooks/useBooks';
+import useUser from '../../../hooks/useAuth';
+import { Roles } from '../../../helpers/user-types';
+import lodash from 'lodash'
+import { canAccess } from '../../../helpers/access';
+
 
 const theme = createTheme();
 
-const initial = {
-  title:"",
-  description:"",
-  author:"",
-  category:"",
-  free:'false',
-  type:'pdf',
-}
+const EditBook = () =>{
 
-export default function AddBook() {
 
   const user = useUser(state => state.user);
- 
-  const [photo, setPhoto] = useState(undefined);
-  const [content, setContent] = useState(undefined);
-  const [bookDetail, setBookDetail] = useState(initial);
-
-  const categories = userCategory(state=> state.categories);
-  const fetchALL  = userCategory(state => state.fetchALL);
-
-
+  const location = useLocation();
   const [Loader, showLoader, HideLoader]  = useLoader()
   const [warningNotification, successNotification] = useNotification();
+  const [bookDetail, setBookDetail] = useState(location.state)
+  const editBook = useBooks(state => state.editBook);
+  const  navigate = useNavigate();
+  const categories = userCategory(state=> state.categories);
+  const fetchALL  = userCategory(state => state.fetchALL);
+  
+
+  const [doRequest] = useRequest({
+    url:undefined,
+    method:'put',
+    body:undefined,
+    onSuccess:(data) => {
+      editBook(data)
+      successNotification("BooK successfully Edited", "Book Edited")
+      navigate('/dashboard/books')
+      console.log(data);
+    }
+  })
+
+  const handleBook = (e)=>{
+    e.preventDefault();
+
+    const name = e.target.name
+    setBookDetail({
+      ...bookDetail,
+      [name]:e.target.value
+    }) 
+
+  }
+
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    let newData = undefined;
+
+    if(user.userType === Roles.lecturer){
+     newData = lodash.omit(bookDetail, "bookStatus"); 
+    }else{
+      newData = bookDetail
+    }
+    try {
+      showLoader()
+       doRequest(newData, undefined, undefined, `/books/${bookDetail._id}/detail`)
+     } catch (error) {
+
+      const errors = error.response.data?.errors
+
+      for(const err of errors){
+        warningNotification(err.message)
+     }
+
+    }
+    HideLoader()
+  }
 
   useEffect(()=>{
+    
      
-     
+    console.log(bookDetail.category, "categ");
     try {
       fetchALL();
     } catch (error) {
@@ -51,81 +89,11 @@ export default function AddBook() {
     }
 
   },[])
-
-
-  const  [doRequest] = useRequest({
-    url:"/books/",
-    method:"post",
-    onSuccess:(data) => {
-      setContent(undefined) 
-      setPhoto(undefined)
-      setBookDetail(initial) 
-      successNotification(`successfully added book ${data.title}`, "book added")
-    }
-  })
-  
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    showLoader()
-
-    const data = new FormData();
-
-    data.append("photo", photo[0]);
-    data.append("content", content[0]);
-    data.append('title',  bookDetail.title);
-    data.append('description', bookDetail.description);
-    data.append('author', bookDetail.author);
-    data.append('category', bookDetail.category);
-    data.append('free', bookDetail.free)
-    data.append('type', bookDetail.type);
-    data.append('addedBy', user?.id)
-    
-
-
-   try {
-
-    doRequest({}, {'Content-Type':  `multipart/form-data; ${data.getBoundary}`},data)
-
-    
-
-   } catch (error) {
-    
-    console.log("error from data", error);
-   }
   
 
 
-
-   HideLoader()
-  };
-
-
-  const handleFileUploadError = (error) => {
-    // Do something...
-    console.log(error);
-  }
-  
-  const handleFilesChange = (files) => {
-    // Do something...
-    console.log(files);
-    if(files[0]?.type.startsWith('image')){
-      setPhoto(files)
-    }else{
-      setContent(files)
-    }
-
-    console.log(files);
-  }
-
-  const handleBook = (e) =>{
-    setBookDetail({
-      ...bookDetail,
-      [e.target.name]: e.target.value
-    })
-  }
-
-
-  return (
+  return(
+    <>
     <ThemeProvider theme={theme}>
       {Loader}
       <Container component="main" maxWidth="md">
@@ -214,25 +182,6 @@ export default function AddBook() {
                 <MenuItem value='video'>VIDEO</MenuItem>
               </TextField>
             </Grid>
-            <Grid item xs={6}>
-              <FieldInput
-              handleFileUploadError={handleFileUploadError}
-              handleFilesChange={handleFilesChange}
-              allowedExtensions={["image/*"]}
-              title="Cover Image"
-              value={photo}
-              
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <FieldInput
-              handleFileUploadError={handleFileUploadError}
-              handleFilesChange={handleFilesChange}
-              allowedExtensions={['video/*', '.pdf']}
-              title="Upload the PDF or Video"
-              value={content}
-              />
-            </Grid>
           </Grid>
             <TextField
               margin="normal"
@@ -254,6 +203,31 @@ export default function AddBook() {
               })}
               
             </TextField>
+            {
+              canAccess(
+                [Roles.admin, Roles.bookmod],
+                user.userType,
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  name="bookStatus"
+                  label="book approval status"
+                  type="bookStatus"
+                  id="bookStatus"
+                  value={bookDetail.bookStatus}
+                  onChange={handleBook}
+                  autoComplete="bookStatus"
+                  color='success'
+                  select
+                  size='small'
+                >
+                    <MenuItem value={"false"}>False</MenuItem>
+                    <MenuItem value={"true"}>True</MenuItem>
+                </TextField>
+                
+              )
+            }
 
 
             <TextField
@@ -277,11 +251,14 @@ export default function AddBook() {
               sx={{ mt: 3, mb: 2 }}
               color="success"
             >
-              Add Book
+              Update Book
             </Button>
           </Box>
         </Box>
       </Container>
     </ThemeProvider>
-  );
+    </>
+  )
 }
+
+export default EditBook;

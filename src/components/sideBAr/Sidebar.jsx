@@ -9,7 +9,7 @@ import {
    ListItemIcon,
    ListItemText, 
    styled} from '@mui/material';
-import {Money, Dashboard,Category, Person, People ,MonetizationOn, LibraryBooks, Logout, VerifiedUser } from '@mui/icons-material';
+import {Money, ContactMail, Pageview, Dashboard,Category, Person, People ,MonetizationOn, LibraryBooks, Logout, VerifiedUser } from '@mui/icons-material';
 
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
@@ -270,8 +270,62 @@ export default function MainSiderBar({open, theme, handleDrawerClose }){
           </ListItemButton>
         </ListItem>
         }
-
-
+        {
+          canAccess(
+            [Roles.admin],
+            user.userType,
+            <ListItem  disablePadding sx={{ display: 'block' }}>
+              <ListItemButton component="a"
+                href='/dashboard/contacts'
+                onClick={handleChck}
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'center',
+                  px: 2.5
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : 'auto',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <ContactMail />
+                </ListItemIcon>
+                <ListItemText primary={"contacts"}  sx={{ opacity: open ? 1 : 0 }} />
+              </ListItemButton>
+            </ListItem>
+            )
+        } 
+       {
+          canAccess(
+            [Roles.admin],
+            user.userType,
+            <ListItem  disablePadding sx={{ display: 'block' }}>
+              <ListItemButton component="a"
+                href='/dashboard/pages'
+                onClick={handleChck}
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'center',
+                  px: 2.5
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : 'auto',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <Pageview />
+                </ListItemIcon>
+                <ListItemText primary={"pages"}  sx={{ opacity: open ? 1 : 0 }} />
+              </ListItemButton>
+            </ListItem>
+            )
+        } 
     </List>
     <Divider />
     <List>
