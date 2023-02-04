@@ -8,7 +8,7 @@ const usePage = create((set) => ({
     try {
 
        console.log(page);
-      const res = await request().get(`/pages${page ? "?page="+page : undefined}`)
+      const res = await request().get(`/pages${page ? "?page="+page : ''}`)
       set(state => ({pages:[...res.data.data]}));
 
     } catch (error) {

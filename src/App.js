@@ -35,6 +35,8 @@ import Statistic from './pages/Admin/statistics';
 import Page from './pages/Admin/Pages/Page';
 import AddPage from './pages/Admin/Pages/addPage';
 import ListPageSection from './pages/Admin/Pages/listSection';
+import AddSection from './pages/Admin/Pages/addSection';
+import EditPage from './pages/Admin/Pages/editPage';
 
 const App = () =>{
   return (
@@ -78,7 +80,8 @@ const App = () =>{
               
               <Route path="pages" element={<Page />} /> 
               <Route path="pages/add" element={<AddPage />} />
-              <Route path="pages/section/list" element={<ListPageSection />} />
+              <Route path="pages/edit" element={<EditPage />} />
+              <Route path="pages/section/add" element={<AddSection />} />
                      
               
             </Route>

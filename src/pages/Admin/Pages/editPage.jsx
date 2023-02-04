@@ -1,59 +1,56 @@
-import  React, {useState,useEffect} from 'react';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
+import React, {useState,useEffect} from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-
-import { useNavigate } from 'react-router-dom';
-import useUser from '../../../hooks/useAuth';
+import { Box, Button, Container, CssBaseline, Grid, MenuItem, TextField } from '@mui/material';
 import useLoader from '../../../hooks/useLoader';
 import useNotification from '../../../hooks/useNotification';
-import { Grid, MenuItem } from '@mui/material';
-import FieldInput from '../../../components/Input/fileupload';
-import userCategory from '../../../hooks/useCategory';
+import { useLocation, useNavigate } from 'react-router-dom';
 import useRequest from '../../../hooks/useRequest';
+import userCategory from '../../../hooks/useCategory';
+import useBooks from '../../../hooks/useBooks';
+import useUser from '../../../hooks/useAuth';
+import { Roles } from '../../../helpers/user-types';
+import lodash from 'lodash'
+import { canAccess } from '../../../helpers/access';
+import FieldInput from '../../../components/Input/fileupload';
+import usePage from '../../../hooks/usePage';
+
 
 const theme = createTheme();
 
-const initial = {
-  title:"",
-  description:"",
-  page:"",
-}
+const EditPage = () =>{
 
-export default function AddPage() {
 
   const user = useUser(state => state.user);
- 
-  const [photo, setPhoto] = useState(undefined);
-  const [pageDetail, setPageDetail] = useState(initial);
-
-
+  const location = useLocation();
   const [Loader, showLoader, HideLoader]  = useLoader()
   const [warningNotification, successNotification] = useNotification();
+  const [pageDetail, setpageDetail] = useState(location.state);
+  const editPage = usePage(state => state.addPage);
 
 
-  const  [doRequest] = useRequest({
-    url:"/pages/",
+
+  const [doRequest] = useRequest({
+    url:"/pages/sessions",
     method:"post",
     onSuccess:(data) => {
-      setPhoto(undefined)
-      setPageDetail(initial) 
-      successNotification(`successfully added page ${data.title}`, "book added")
+      setpageDetail({
+        title:"",
+        description:"",
+        page: pageDetail.page
+      }) 
+
+      editPage(data)
+      successNotification(`successfully added page section ${data.title}`, "section added")
     }
   })
-  
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     showLoader()
 
     const data = new FormData();
 
-    if(photo){
-      data.append("photo", photo[0]);
-    }
+
     data.append('title',  pageDetail.title);
     data.append('description', pageDetail.description);
     data.append('page', pageDetail.page);
@@ -69,36 +66,28 @@ export default function AddPage() {
     
     console.log("error from data", error);
    }
-  
-
-
 
    HideLoader()
   };
 
 
-  const handleFileUploadError = (error) => {
-    // Do something...
-    console.log(error);
-  }
-  
-  const handleFilesChange = (files) => {
-    // Do something...
-    if(files[0]?.type.startsWith('image')){
-      setPhoto(files)
-    }
+  const handlePage = (e)=>{
+    e.preventDefault();
 
-  }
-
-  const handlePage = (e) =>{
-    setPageDetail({
+    const name = e.target.name
+    setpageDetail({
       ...pageDetail,
-      [e.target.name]: e.target.value
-    })
+      [name]:e.target.value
+    }) 
+
   }
 
 
-  return (
+
+
+
+  return(
+    <>
     <ThemeProvider theme={theme}>
       {Loader}
       <Container component="main" maxWidth="md">
@@ -137,29 +126,16 @@ export default function AddPage() {
                 fullWidth
                 name="page"
                 label="Page Name"
-                type="page"
+                type="page name"
                 value={pageDetail.page}
                 onChange={handlePage}
                 id="page"
                 autoComplete="page"
                 color='success'
                 size='small'
-                placeholder='one word page name'
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <FieldInput
-              handleFileUploadError={handleFileUploadError}
-              handleFilesChange={handleFilesChange}
-              allowedExtensions={["image/*"]}
-              title="Sectional Images Image"
-              value={photo}
-              
               />
             </Grid>
           </Grid>
-        
-
 
             <TextField
               margin="normal"
@@ -182,11 +158,14 @@ export default function AddPage() {
               sx={{ mt: 3, mb: 2 }}
               color="success"
             >
-              Add Page
+              Edit Page
             </Button>
           </Box>
         </Box>
       </Container>
     </ThemeProvider>
-  );
+    </>
+  )
 }
+
+export default EditPage;

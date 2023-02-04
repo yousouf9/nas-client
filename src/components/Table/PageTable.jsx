@@ -62,12 +62,14 @@ export default function BookTable() {
         const handleDelete = (e) => {
           const currentRow = params.row;
           confirm({
-            description:"Are you sure you want to delete this book!",
+            description:"Are you sure you want to delete this Page/Section!",
             confirmationText:"Yes"
           })
           .then(() => {
+
+            console.log(currentRow);
             try {
-              deleteRequest({}, undefined, undefined, `/books/${currentRow.id}`)
+              deleteRequest({}, undefined, undefined, `/pages/${currentRow.id}`)
              } catch (error) {
                console.log(error);
              }
@@ -79,13 +81,13 @@ export default function BookTable() {
 
         const handleView = (e) => {
           const currentRow = params.row;
-            navigate("/pages/section/list", {state:{...currentRow}})
+            navigate("/dashboard/pages/section/add", {state:{...currentRow}})
 
           return
         };
         const handleEdit = (e) => {
           const currentRow = params.row;
-          navigate('/dashboard/books/edit', {state:currentRow})
+          navigate('/dashboard/pages/edit', {state:currentRow})
           return
         };
         
@@ -105,7 +107,7 @@ export default function BookTable() {
               <em>None</em>
             </MenuItem>
             <MenuItem value={10}>
-              <Button fullWidth variant="outlined" color="info" size="small" onClick={handleView}>List Sections</Button>
+              <Button fullWidth variant="outlined" color="info" size="small" onClick={handleView}>add Section</Button>
             </MenuItem>
             <MenuItem value={20}>
             <Button fullWidth variant="outlined" color="warning" size="small" onClick={handleEdit}>Edit</Button>
@@ -128,7 +130,7 @@ export default function BookTable() {
 
     const  callback = useCallback( async()=>{
       
-        fetchPages("About")
+        fetchPages()
    
     }, [fetchPages])
 
