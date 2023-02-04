@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { DataGrid , GridToolbar } from '@mui/x-data-grid';
+import { DataGrid , GridToolbar, gridClasses } from '@mui/x-data-grid';
 import useRequest from '../../hooks/useRequest';
 import { useConfirm } from 'material-ui-confirm';
 import useUser from '../../hooks/useAuth';
@@ -8,18 +8,58 @@ import { useNavigate } from 'react-router-dom';
 import useNotification from '../../hooks/useNotification';
 import moment from 'moment';
 import { Button, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import { alpha, styled } from '@mui/material/styles';
 import { useCallback } from 'react';
 import { useEffect } from 'react';
 import { Roles } from '../../helpers/user-types';
 import { canAccess } from '../../helpers/access';
+import useContact from '../../hooks/useContact';
 
-export default function PageTable() {
+
+
+const ODD_OPACITY = 0.2;
+
+const StripedDataGrid = styled(DataGrid)(({ theme }) => ({
+  [`& .${gridClasses.row}.even`]: {
+    backgroundColor: theme.palette.grey[200],
+    '&:hover, &.Mui-hovered': {
+      backgroundColor: alpha(theme.palette.primary.main, ODD_OPACITY),
+      '@media (hover: none)': {
+        backgroundColor: 'transparent',
+      },
+    },
+    '&.Mui-selected': {
+      backgroundColor: alpha(
+        theme.palette.primary.main,
+        ODD_OPACITY + theme.palette.action.selectedOpacity,
+      ),
+      '&:hover, &.Mui-hovered': {
+        backgroundColor: alpha(
+          theme.palette.primary.main,
+          ODD_OPACITY +
+            theme.palette.action.selectedOpacity +
+            theme.palette.action.hoverOpacity,
+        ),
+        // Reset on touch devices, it doesn't add specificity
+        '@media (hover: none)': {
+          backgroundColor: alpha(
+            theme.palette.primary.main,
+            ODD_OPACITY + theme.palette.action.selectedOpacity,
+          ),
+        },
+      },
+    },
+  },
+}));
+
+
+export default function ContactTable(){
 
   const confirm = useConfirm() 
   const user = useUser(state => state.user);
-  const pages = usePage(state=> state.pages);
-  const fetchPages  = usePage(state => state.fetchPages);
-  const deletePage = usePage(state => state.deletePage);
+  const contacts = useContact(state=> state.contacts);
+  const fetchContacts  = useContact(state => state.fetchContacts);
+  const deleteContact = useContact(state => state.deleteContact);
   const navigate = useNavigate()
   const [warningNotification, successNotification] = useNotification();
 
@@ -29,7 +69,7 @@ export default function PageTable() {
     method:'delete',
     body:undefined,
     onSuccess:(data) => {
-      deletePage(data)
+      deleteContact(data)
       successNotification("Page Successfully deleted", "Page Deleted")
     }
   })
@@ -37,13 +77,15 @@ export default function PageTable() {
     
  const columns = [
   { field: 'id', headerName: 'ID', hide:true},
-  { field: 'title', headerName: 'Title', width: 130 },
-  {field: 'page', headerName: 'Page', width: 130},
-  {field: 'isSection', type:"boolean", headerName: 'Section', width: 90},
+  { field: 'name', headerName: 'Name', width: 130 },
+  {field: 'title', headerName: 'Title', width: 130},
+  {field: 'sender', headerName: 'email', width: 230},
+  {field: 'read', type:"boolean", headerName: 'Opened', width: 90},
+  {field: 'replied', type:"boolean", headerName: 'Replied', width: 90},
   { 
   field: 'createdAt',
   type:"date",  
-  headerName: 'Date Created', 
+  headerName: 'Date Sent', 
   width: 200,
   valueFormatter: params => 
   moment(params?.value).format("DD/MM/YYYY hh:mm A"),
@@ -126,14 +168,14 @@ export default function PageTable() {
 
     const  callback = useCallback( async()=>{
       
-        fetchPages()
+      fetchContacts()
    
-    }, [fetchPages])
+    }, [fetchContacts])
 
     useEffect(()=>{
     try {
       callback()
-      console.log(pages, "One two");
+      console.log(contacts, "One two");
     } catch (error) {
     }
     }, [callback])
@@ -149,9 +191,9 @@ export default function PageTable() {
 
   return (
     <div style={{ height: 500, width: '100%' }}>
-      <DataGrid
+      <StripedDataGrid
         autoHeight
-        rows={pages}
+        rows={contacts}
         columns={columns}
         pageSize={10}
         rowsPerPageOptions={[10, 20, 50]}
@@ -161,6 +203,11 @@ export default function PageTable() {
         components={{
           Toolbar:GridToolbar
         }}
+        getRowClassName={(params) => {
+            console.log(params);
+            return  params.row.read ? 'even' : 'odd'
+        }
+        }
       />
     </div>
   );

@@ -37,6 +37,7 @@ import AddPage from './pages/Admin/Pages/addPage';
 import ListPageSection from './pages/Admin/Pages/listSection';
 import AddSection from './pages/Admin/Pages/addSection';
 import EditPage from './pages/Admin/Pages/editPage';
+import Contact from './pages/Admin/Contact/Contacts';
 
 const App = () =>{
   return (
@@ -82,7 +83,10 @@ const App = () =>{
               <Route path="pages/add" element={<AddPage />} />
               <Route path="pages/edit" element={<EditPage />} />
               <Route path="pages/section/add" element={<AddSection />} />
-                     
+              <Route path="contacts" element={<Contact />} /> 
+              
+
+       
               
             </Route>
             <Route path="/book/pdf" element={<PdfViewer />} />

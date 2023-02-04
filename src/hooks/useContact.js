@@ -1,14 +1,14 @@
 import create from 'zustand';
 import request from '../api/build-request';
 
-const usePage = create((set) => ({
+const useContact = create((set) => ({
   contacts: [],
 
   fetchContacts: async () => {
     try {
     const res = await request().get('/contacts')
 
-      set(state=>({contacts:[...res.data]}));
+      set(state=>({contacts:[...res.data.data]}));
     } catch (error) {
        throw new Error(error.response?.data)
     }  
@@ -18,19 +18,18 @@ const usePage = create((set) => ({
   },
   editContact: (data) => {
 
-    set(state=>({contacts:state.contacts.map(page=>{
-        if(page.id===data.id){
-          return {...page, title: data.title, description: data.description}
+    set(state=>({contacts:state.contacts.map(contact=>{
+        if(contact.id===data.id){
+          return {...contact, ...data}
         }
-        return page
+        return contact
     })}));
   },
-  deletePage: (data) => {
-    set(state=>({contacts:state.contacts.filter(page=>{
-      return page.id!==data.id
+  deleteContact: (data) => {
+    set(state=>({contacts:state.contacts.filter(contact=>{
+      return contact.id!==data.id
     })}));
-  }
-
+  },
 }));
 
-export default usePage;
+export default useContact;
