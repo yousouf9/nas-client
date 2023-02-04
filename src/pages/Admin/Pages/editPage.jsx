@@ -26,21 +26,20 @@ const EditPage = () =>{
   const [warningNotification, successNotification] = useNotification();
   const [pageDetail, setpageDetail] = useState(location.state);
   const editPage = usePage(state => state.addPage);
-
+ const navigate = useNavigate();
 
 
   const [doRequest] = useRequest({
-    url:"/pages/sessions",
-    method:"post",
+    url:undefined,
+    method:"put",
     onSuccess:(data) => {
       setpageDetail({
-        title:"",
-        description:"",
-        page: pageDetail.page
+        ...data
       }) 
 
       editPage(data)
-      successNotification(`successfully added page section ${data.title}`, "section added")
+      successNotification(`successfully edited page ${data.title}`, "page/section edited")
+      
     }
   })
 
@@ -48,19 +47,19 @@ const EditPage = () =>{
     event.preventDefault();
     showLoader()
 
-    const data = new FormData();
-
-
-    data.append('title',  pageDetail.title);
-    data.append('description', pageDetail.description);
-    data.append('page', pageDetail.page);
+    const data = {
+      'title':pageDetail.title,
+      'description': pageDetail.description,
+      'page':pageDetail.page,
+      'position':pageDetail.position
+    }
 
 
    try {
 
-    doRequest({}, {'Content-Type':  `multipart/form-data; ${data.getBoundary}`},data)
-
-    
+    showLoader()
+    doRequest(data, undefined, undefined, `/pages/${pageDetail.id}`)
+    HideLoader()
 
    } catch (error) {
     
@@ -136,7 +135,23 @@ const EditPage = () =>{
               />
             </Grid>
           </Grid>
-
+          <TextField
+                margin="normal"
+                fullWidth
+                name="position"
+                label="Image Position"
+                type="position"
+                id="position"
+                value={pageDetail.position}
+                onChange={handlePage}
+                autoComplete="position"
+                color='success'
+                select
+                size='small'
+              >
+                <MenuItem value={"right"}>right</MenuItem>
+                <MenuItem value={"left"}>left</MenuItem>
+            </TextField>
             <TextField
               margin="normal"
               fullWidth

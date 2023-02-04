@@ -131,7 +131,9 @@ const HomeHeader = ({ name}) => {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page.name} onClick={handleCloseNavMenu}>
+                <MenuItem key={page.name}
+                  onClick={(e)=> handleNavigate(e, page.name, page.link)}
+                 >
                   <Typography textAlign="center">{page.name}</Typography>
                 </MenuItem>
               ))}

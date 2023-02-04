@@ -21,6 +21,7 @@ const initial = {
   title:"",
   description:"",
   page:"",
+  position:""
 }
 
 export default function AddPage() {
@@ -57,6 +58,7 @@ export default function AddPage() {
     data.append('title',  pageDetail.title);
     data.append('description', pageDetail.description);
     data.append('page', pageDetail.page);
+    data.append("position", pageDetail.position);
 
 
    try {
@@ -156,6 +158,25 @@ export default function AddPage() {
               value={photo}
               
               />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                margin="normal"
+                fullWidth
+                name="position"
+                label="Image Position"
+                type="position"
+                id="position"
+                value={pageDetail.position}
+                onChange={handlePage}
+                autoComplete="position"
+                color='success'
+                select
+                size='small'
+              >
+                <MenuItem value={"right"}>right</MenuItem>
+                <MenuItem value={"left"}>left</MenuItem>
+              </TextField>
             </Grid>
           </Grid>
         
