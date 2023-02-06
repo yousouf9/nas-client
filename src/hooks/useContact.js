@@ -3,6 +3,7 @@ import request from '../api/build-request';
 
 const useContact = create((set) => ({
   contacts: [],
+  contact: undefined,
 
   fetchContacts: async () => {
     try {
@@ -13,7 +14,16 @@ const useContact = create((set) => ({
        throw new Error(error.response?.data)
     }  
    },
-  addPage: (data) => {
+   fetchContact: async (id) => {
+    try {
+    const res = await request().get(`/contacts/${id}`)
+
+      set(state=>({contact:res.data.data}));
+    } catch (error) {
+       throw new Error(error.response?.data)
+    }  
+   },
+  addContact: (data) => {
      set(state=>({contacts:[...state.contacts, data]}));
   },
   editContact: (data) => {

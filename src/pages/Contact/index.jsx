@@ -14,7 +14,7 @@ import { useNavigate } from 'react-router-dom';
 import useRequest from '../../hooks/useRequest';
 import request from '../../api/build-request';
 import HomeHeader from '../../components/headers/Home';
-import { Paper } from '@mui/material';
+import { Link, Paper } from '@mui/material';
 import {Phone, MyLocation, Email} from '@mui/icons-material';
 
 
@@ -99,17 +99,12 @@ const  HomeContact =() =>{
                 alignItems: 'center',
             }}>
               <Phone color='green'  fontSize='medium'/>
-              <Typography variant="h6">phone</Typography>
-            </Box>
-          </Paper>
-          <Paper>
-            <Box p={1} sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-            }}>
-              <MyLocation color='#b7e6b7'  fontSize='medium'/>
-              <Typography variant="h6">Address</Typography>
+              <Typography variant="p">
+                <Link href='tel:07030502570'>07030502570</Link>
+              </Typography>
+              <Typography variant="p">
+                <Link href='tel:08111706680'>08111706680</Link>
+              </Typography>
             </Box>
           </Paper>
           <Paper>
@@ -119,10 +114,18 @@ const  HomeContact =() =>{
                 alignItems: 'center',
             }}>
               <Email color='#b7e6b7'  fontSize='medium'/>
-              <Typography variant="h6">Email</Typography>
+              <Typography variant="p">
+                <Link href='mailto:info@nlibrary.org.ng'>info@nlibrary.org.ng</Link>
+              </Typography>
+              <Typography variant="p">
+                <Link href='mailto:globalunifieddevelopmentempire@gmail.com'>globalunifieddevelopmentempire@gmail.com</Link>
+              </Typography>
             </Box>
           </Paper>
         </Box>
+      </Box>
+      <Box>
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3942.3500751111146!2d7.904677512174454!3d8.8469623769316!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1051e5f91e1e66c3%3A0xee066b44177c4537!2sNasarawa%20State%20University%20Keffi!5e0!3m2!1sen!2sng!4v1675689676747!5m2!1sen!2sng" width={"100%"} height={"450"} style={{border: 0}} allowFullScreen="" loading="lazy" referrerPolicy="no-referrer-when-downgrade"></iframe>
       </Box>
 
         <Container component="main" maxWidth="md">

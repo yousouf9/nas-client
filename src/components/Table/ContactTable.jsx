@@ -70,7 +70,7 @@ export default function ContactTable(){
     body:undefined,
     onSuccess:(data) => {
       deleteContact(data)
-      successNotification("Page Successfully deleted", "Page Deleted")
+      successNotification("Contact Successfully deleted", "Page Deleted")
     }
   })
 
@@ -100,14 +100,13 @@ export default function ContactTable(){
         const handleDelete = (e) => {
           const currentRow = params.row;
           confirm({
-            description:"Are you sure you want to delete this Page/Section!",
+            description:"Are you sure you want to delete this message",
             confirmationText:"Yes"
           })
           .then(() => {
-
             console.log(currentRow);
             try {
-              deleteRequest({}, undefined, undefined, `/pages/${currentRow.id}`)
+              deleteRequest({}, undefined, undefined, `/contacts/${currentRow.id}`)
              } catch (error) {
                console.log(error);
              }
@@ -119,13 +118,13 @@ export default function ContactTable(){
 
         const handleView = (e) => {
           const currentRow = params.row;
-            navigate("/dashboard/pages/section/add", {state:{...currentRow}})
+            navigate("/dashboard/contacts/view", {state:{...currentRow}})
 
           return
         };
         const handleEdit = (e) => {
           const currentRow = params.row;
-          navigate('/dashboard/pages/edit', {state:currentRow})
+          navigate('/dashboard/contacts/reply', {state:currentRow})
           return
         };
         
@@ -145,14 +144,14 @@ export default function ContactTable(){
               <em>None</em>
             </MenuItem>
             <MenuItem value={10}>
-              <Button fullWidth variant="outlined" color="info" size="small" onClick={handleView}>add Section</Button>
+              <Button fullWidth variant="outlined" color="info" size="small" onClick={handleView}>View</Button>
             </MenuItem>
             <MenuItem value={20}>
-            <Button fullWidth variant="outlined" color="warning" size="small" onClick={handleEdit}>Edit</Button>
+            <Button fullWidth variant="outlined" color="warning" size="small" onClick={handleEdit}>Reply</Button>
             </MenuItem>
             {
             canAccess(
-              [Roles.admin, Roles.lecturer],
+              [Roles.admin],
                 user.userType,
               <MenuItem value={30}>
                 <Button fullWidth variant="outlined" color="error" size="small" onClick={handleDelete}>Delete</Button>

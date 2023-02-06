@@ -38,6 +38,8 @@ import ListPageSection from './pages/Admin/Pages/listSection';
 import AddSection from './pages/Admin/Pages/addSection';
 import EditPage from './pages/Admin/Pages/editPage';
 import Contact from './pages/Admin/Contact/Contacts';
+import ViewMessage from './pages/Admin/Contact/ViewMessage';
+import SendMessage from './pages/Admin/Contact/SendMessage';
 
 const App = () =>{
   return (
@@ -84,8 +86,10 @@ const App = () =>{
               <Route path="pages/edit" element={<EditPage />} />
               <Route path="pages/section/add" element={<AddSection />} />
               <Route path="contacts" element={<Contact />} /> 
+              <Route path="contacts/view" element={<ViewMessage />} /> 
+              <Route path="contacts/reply" element={<SendMessage />} /> 
               
-
+              
        
               
             </Route>

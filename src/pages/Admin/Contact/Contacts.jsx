@@ -13,17 +13,6 @@ import {
     return(
       <>
         <Box sx={{ flexGrow: 0 }}>
-          <Grid marginBottom={3} container justifyContent="flex-end">
-            <Button 
-              variant='contained' 
-              color="info"
-              href="/dashboard/pages/add"
-              startIcon={<Add/>}
-              >
-                Add Page
-          </Button>
-            <Divider />
-          </Grid>
           <ContactTable />
         </Box>
 
