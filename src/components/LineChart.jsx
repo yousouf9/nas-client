@@ -1,15 +1,21 @@
 import { ResponsiveLine } from "@nivo/line";
 import { useTheme } from "@mui/material";
 import { tokens } from "../theme";
-import { mockLineData as data } from "../data/mockData";
+import { mockLineData as LineChat } from "../data/mockData";
 
-const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
+const LineChart = ({ isCustomLineColors = false, isDashboard = false, data  }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
+
+  const dataT = data?.status==="fulfilled" ? data?.value : []
+  const newData =  LineChat(dataT);
+
+  console.log("newdata", newData);
+
   return (
     <ResponsiveLine
-      data={data}
+      data={newData}
       theme={{
         axis: {
           domain: {

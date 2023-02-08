@@ -105,14 +105,7 @@ const  HomeContact =() =>{
               <Typography variant="p">
                 <Link href='tel:08111706680'>08111706680</Link>
               </Typography>
-            </Box>
-          </Paper>
-          <Paper>
-            <Box p={1} sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-            }}>
+
               <Email color='#b7e6b7'  fontSize='medium'/>
               <Typography variant="p">
                 <Link href='mailto:info@nlibrary.org.ng'>info@nlibrary.org.ng</Link>
