@@ -212,7 +212,7 @@ const StatisticAdmin = () =>{
           justifyContent="center"
         >
           <StatBox
-            title={totalNotFreeBook.status === "fulfilled" ? totalNotFreeBook.value : 0}
+            title={totalNotFreeBook?.status === "fulfilled" ? totalNotFreeBook?.value : 0}
             subtitle={"Total Paid Books"}
             progress="0.80"
             increase=""
@@ -231,7 +231,7 @@ const StatisticAdmin = () =>{
           justifyContent="center"
         >
           <StatBox
-            title={totalFreeBook.status === "fulfilled" ? totalFreeBook.value : 0}
+            title={totalFreeBook?.status === "fulfilled" ? totalFreeBook?.value : 0}
             subtitle={"Total Free Books"}
             progress="0.80"
             increase=""
@@ -250,7 +250,7 @@ const StatisticAdmin = () =>{
           justifyContent="center"
         >
           <StatBox
-            title={totalVideoBook.status === "fulfilled" ? totalVideoBook.value : 0}
+            title={totalVideoBook?.status === "fulfilled" ? totalVideoBook?.value : 0}
             subtitle={"Total Video Books"}
             progress="0.80"
             increase=""
@@ -269,7 +269,7 @@ const StatisticAdmin = () =>{
           justifyContent="center"
         >
           <StatBox
-            title={totalPDFBook.status === "fulfilled" ? totalPDFBook.value : 0}
+            title={totalPDFBook?.status === "fulfilled" ? totalPDFBook?.value : 0}
             subtitle={"Total PDF Books"}
             progress="0.80"
             increase=""
@@ -288,7 +288,7 @@ const StatisticAdmin = () =>{
           justifyContent="center"
         >
           <StatBox
-            title={totalApprovedBook.status === "fulfilled" ? totalApprovedBook.value : 0}
+            title={totalApprovedBook?.status === "fulfilled" ? totalApprovedBook?.value : 0}
             subtitle={"Total Approved Books"}
             progress="0.80"
             increase=""
@@ -307,7 +307,7 @@ const StatisticAdmin = () =>{
           justifyContent="center"
         >
           <StatBox
-            title={totalNotApprovedBook.status === "fulfilled" ? totalNotApprovedBook.value : 0}
+            title={totalNotApprovedBook?.status === "fulfilled" ? totalNotApprovedBook?.value : 0}
             subtitle={"Total Pending Books"}
             progress="0.80"
             increase=""
@@ -326,7 +326,7 @@ const StatisticAdmin = () =>{
           justifyContent="center"
         >
           <StatBox
-            title={totalBook.status === "fulfilled" ? totalBook.value : 0}
+            title={totalBook?.status === "fulfilled" ? totalBook?.value : 0}
             subtitle={"Total Books"}
             progress="0.80"
             increase=""
@@ -405,7 +405,7 @@ const StatisticAdmin = () =>{
             </Typography>
           </Box>
           {transactions?.status==="fulfilled" ?
-           transactions.value.map((transaction, i) => (
+           transactions?.value.map((transaction, i) => (
             <Box
               key={`${transaction.id}-${i}`}
               display="flex"
