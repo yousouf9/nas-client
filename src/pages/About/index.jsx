@@ -37,9 +37,9 @@ const  HomeContact =() =>{
     useEffect(()=>{
 
       async function getData(){
-        const result = await axios.get('https://staging.valuepayng.com/v1/pages?page=1&limit=3page_category=company&for', {withCredentials: false})
+        const result = await axios.get('https://staging.valuepayng.com/v1/pages?page=1&limit=3page_category=company&for')
 
-        console.log(result)
+        console.log(result.data)
       }
       
     try {
