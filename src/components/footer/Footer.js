@@ -38,9 +38,9 @@ const HomeFooter = () => {
         </Box>
         <Divider style={{background: '#e3e3e3' }}/>
         <Box component={'footer'} sx={{display:"flex", flexDirection:'row-reverse',  backgroundColor:"black"}}>
-          <SocialLink link="http" Icon={FacebookRounded}  />
-          <SocialLink link="#" Icon={Twitter} />
-          <SocialLink link="#" Icon={Instagram} />
+          <SocialLink link="https://www.facebook.com/profile.php?id=100090131445313" Icon={FacebookRounded}  />
+          <SocialLink link="https://twitter.com/nasarawalibrary" Icon={Twitter} />
+          <SocialLink link="https://www.instagram.com/nasarawalibrary5" Icon={Instagram} />
         </Box>
 
       </>

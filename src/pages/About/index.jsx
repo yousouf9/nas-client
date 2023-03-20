@@ -16,7 +16,7 @@ import request from '../../api/build-request';
 import HomeHeader from '../../components/headers/Home';
 import usePage from '../../hooks/usePage';
 import { Card, CardContent, CardMedia } from '@mui/material';
-
+import axios from 'axios'
 
 
 const theme = createTheme();
@@ -35,10 +35,22 @@ const  HomeContact =() =>{
 
 
     useEffect(()=>{
+
+      async function getData(){
+        const result = await axios.get('https://staging.valuepayng.com/v1/pages?page=1&limit=3page_category=company&for', {withCredentials: false})
+
+        console.log(result)
+      }
+      
     try {
+
+      getData()
+
       showLoader()
       callback()
       HideLoader()
+
+      
     } catch (error) {
       console.log(error);
     }
